@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Version"
-  s.version          = "0.8.0"
+  s.version          = "0.8.1"
   s.summary          = "Version represents and compares semantic versions in Swift."
   s.description      = <<-DESC
                        Version is a Swift Library, which enables to represent and compare semantic version numbers.
@@ -12,10 +12,10 @@ Pod::Spec.new do |s|
                        * String Literal Convertible
                        * Printable
                        DESC
-  s.homepage         = "https://github.com/mrackwitz/Version"
+  s.homepage         = "https://github.com/Frank-Tian/Version"
   s.license          = 'MIT'
   s.author           = { "Marius Rackwitz" => "git@mariusrackwitz.de" }
-  s.source           = { :git => "https://github.com/mrackwitz/Version.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/Frank-Tian/Version.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/mrackwitz'
 
   s.swift_version = '5.0'
