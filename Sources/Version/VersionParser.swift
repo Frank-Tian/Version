@@ -24,7 +24,7 @@ public struct VersionParser {
         if strict {
             version = "(\(number))\\.(\(number))\\.(\(number))"
         } else {
-            version = "(\(number))(?:\\.(\(number)))?(?:\\.(\(number)))?"
+            version = "(\(number))(?:\\.(\(number)))?(?:\\.(\(number)))?(?:\\.(\(number)))?"
         }
         let prerelease = "(?:-([0-9A-Za-z-.]+))?(?:\\+([0-9A-Za-z-]+))?"
         let pattern: String
@@ -73,9 +73,9 @@ public struct VersionParser {
     public func parse(components: [String?]) throws -> Version {
         var version = Version()
 
-        if components.count != 6 { // all, major, minor, patch, prerelease, build
-            throw VersionParserError.InvalidComponents
-        }
+//        if components.count != 6 { // all, major, minor, patch, prerelease, build
+//            throw VersionParserError.InvalidComponents
+//        }
 
         if self.strict {
             if components[2] == nil {

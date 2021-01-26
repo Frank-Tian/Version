@@ -35,10 +35,23 @@ public struct Version {
         }
     }
 
+    public var minor2: Int? {
+        didSet {
+            guard let minor2 = self.minor2 else {
+                return
+            }
+            precondition(minor2 >= 0, "Must be non-negative integer")
+        }
+    }
+    
     /// Canonicalized form of minor component of the version.
     ///
     public var canonicalMinor: Int {
         return self.minor ?? 0
+    }
+    
+    public var canonicalMinor2: Int {
+        return self.minor2 ?? 0
     }
 
     /// An optional patch component of the version.
@@ -91,6 +104,7 @@ public struct Version {
     public init(
         major: Int = 0,
         minor: Int? = nil,
+        minor2: Int? = nil,
         patch: Int? = nil,
         prerelease: String? = nil,
         build: String? = nil
@@ -99,12 +113,16 @@ public struct Version {
         if let minor = minor {
             precondition(minor >= 0, "Must be non-negative integer")
         }
+        if let minor2 = minor2 {
+            precondition(minor2 >= 0, "Must be non-negative integer")
+        }
         if let patch = patch {
             precondition(patch >= 0, "Must be non-negative integer")
         }
 
         self.major = major
         self.minor = minor
+        self.minor2 = minor2
         self.patch = patch
         self.prerelease = prerelease
         self.build = build
@@ -176,9 +194,10 @@ extension Version: Equatable {}
 public func ==(lhs: Version, rhs: Version) -> Bool {
     let equalMajor = lhs.major == rhs.major
     let equalMinor = lhs.canonicalMinor == rhs.canonicalMinor
+    let equalMinor2 = lhs.canonicalMinor2 == rhs.canonicalMinor2
     let equalPatch = lhs.canonicalPatch == rhs.canonicalPatch
     let equalPrerelease = lhs.prerelease == rhs.prerelease
-    return equalMajor && equalMinor && equalPatch && equalPrerelease
+    return equalMajor && equalMinor && equalMinor2 && equalPatch && equalPrerelease
 }
 
 public func ===(lhs: Version, rhs: Version) -> Bool {
@@ -204,6 +223,11 @@ public func <(lhs: Version, rhs: Version) -> Bool {
         return minorComparison == .orderedAscending
     }
 
+    let minorComparison2 = Version.compare(lhs: lhs.canonicalMinor2, rhs: rhs.canonicalMinor2)
+    if minorComparison2 != .orderedSame {
+        return minorComparison2 == .orderedAscending
+    }
+    
     let patchComparison = Version.compare(lhs: lhs.canonicalPatch, rhs: rhs.canonicalPatch)
     if patchComparison != .orderedSame {
         return patchComparison == .orderedAscending
@@ -228,6 +252,7 @@ extension Version: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(major)
         hasher.combine(canonicalMinor)
+        hasher.combine(canonicalMinor2)
         hasher.combine(canonicalPatch)
         hasher.combine(prerelease)
     }
